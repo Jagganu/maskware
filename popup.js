@@ -5,16 +5,18 @@ const DEFAULTS = { hardware:true, webrtc:true, fonts:true, av:true, geo:true, lo
 
 const ELS = {};
 const CARDS = {};
+const STS = {};
 for (const k of FEATURES) {
   ELS[k] = document.getElementById(`t-${k}`);
   CARDS[k] = document.getElementById(`card-${k}`);
+  STS[k] = document.getElementById(`s-${k}`);
 }
 
 browser.storage.local.get(FEATURES).then((stored) => {
   for (const k of FEATURES) {
     const on = stored[k] !== undefined ? stored[k] : DEFAULTS[k];
     ELS[k].checked = on;
-    CARDS[k]?.classList.toggle('on', on);
+    setCard(k, on);
   }
   updateBadge();
 });
@@ -22,10 +24,18 @@ browser.storage.local.get(FEATURES).then((stored) => {
 for (const k of FEATURES) {
   ELS[k].addEventListener('change', () => {
     const on = ELS[k].checked;
-    CARDS[k]?.classList.toggle('on', on);
+    setCard(k, on);
     browser.runtime.sendMessage({ type:'maskware-toggle', feature:k, enabled:on });
     updateBadge();
   });
+}
+
+function setCard(k, on) {
+  const c = CARDS[k];
+  if (!c) return;
+  c.classList.toggle('on', on);
+  c.classList.toggle('off', !on);
+  if (STS[k]) STS[k].textContent = on ? 'ON' : 'OFF';
 }
 
 function updateBadge() {

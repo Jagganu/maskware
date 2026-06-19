@@ -4,195 +4,171 @@
 <meta charset="UTF-8">
 <title>Maskware</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg:        #060a16;
-    --surface:   #0b1122;
-    --card-bg:   #111a33;
-    --border:    rgba(255,255,255,0.05);
-    --text:      #e2e8f0;
-    --muted:     #64748b;
-    --glow:      0 0 30px rgba(0,212,255,0.08);
+    --bg: #08080e;
+    --surface: #0e0e18;
+    --card: #141420;
+    --text: #eeeef4;
+    --muted: #6a6a82;
+    --border: rgba(255,255,255,0.04);
+    --glow: #6c5ce7;
 
-    --cyan:      #00d4ff;
-    --purple:    #a855f7;
-    --pink:      #ec4899;
-    --orange:    #f97316;
-    --green:     #22c55e;
-    --amber:     #eab308;
-
-    --cyan-dim:    rgba(0,212,255,0.15);
-    --purple-dim:  rgba(168,85,247,0.15);
-    --pink-dim:    rgba(236,72,153,0.15);
-    --orange-dim:  rgba(249,115,22,0.15);
-    --green-dim:   rgba(34,197,94,0.15);
-    --amber-dim:   rgba(234,179,8,0.15);
-
-    --brand-gradient: linear-gradient(135deg, #00d4ff, #a855f7, #ec4899);
+    --hw-clr: #00d2ff;
+    --wrtc-clr: #a855f7;
+    --fnt-clr: #f472b6;
+    --av-clr: #fb923c;
+    --gps-clr: #4ade80;
+    --loc-clr: #facc15;
   }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
-    width: 340px;
+    width: 352px;
     background: var(--bg);
-    background-image: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.03) 0%, transparent 70%);
+    background-image:
+      radial-gradient(ellipse 120% 60% at 50% -10%, rgba(108,92,231,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 80% 50% at 80% 30%, rgba(0,210,255,0.03) 0%, transparent 60%);
     color: var(--text);
-    font-family: 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
-    font-size: 12.5px;
+    font-family: 'Outfit', system-ui, sans-serif;
+    font-size: 13px;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  .header {
+  .top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 18px 14px;
-    position: relative;
+    padding: 14px 18px 10px;
   }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 18px;
-    right: 18px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), var(--pink), transparent);
-    opacity: 0.3;
-  }
-
-  .brand-wrap {
+  .logo {
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  .brand-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    background: var(--brand-gradient);
+  .logo-mark {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #00d2ff, #a855f7, #f472b6);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: 900;
+    font-size: 13px;
+    font-weight: 800;
     color: #fff;
-    box-shadow: 0 4px 15px rgba(0,212,255,0.2);
+    box-shadow: 0 3px 12px rgba(0,210,255,0.25);
   }
-  .brand {
+  .logo-txt {
     font-size: 15px;
-    font-weight: 900;
-    letter-spacing: 0.18em;
-    background: var(--brand-gradient);
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    background: linear-gradient(135deg, #00d2ff 0%, #a855f7 50%, #f472b6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
-  .badge {
+  .status {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 10px;
+    gap: 5px;
+    font-size: 9.5px;
     font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    padding: 5px 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
     border-radius: 20px;
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.04);
-    transition: all 0.3s ease;
+    color: var(--muted);
+    transition: all 0.4s ease;
   }
-  .badge.on {
-    color: var(--cyan);
-    border-color: rgba(0,212,255,0.15);
-    background: rgba(0,212,255,0.06);
-    box-shadow: 0 0 20px rgba(0,212,255,0.05);
-  }
-  .badge-dot {
-    width: 6px;
-    height: 6px;
+  .status.on { color: #00d2ff; border-color: rgba(0,210,255,0.15); background: rgba(0,210,255,0.06); }
+  .status-dot {
+    width: 5px; height: 5px;
     border-radius: 50%;
     background: var(--muted);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
   }
-  .badge.on .badge-dot {
-    background: var(--cyan);
-    box-shadow: 0 0 8px var(--cyan);
-  }
-
-  .section-title {
-    padding: 12px 18px 8px;
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+  .status.on .status-dot { background: #00d2ff; box-shadow: 0 0 8px #00d2ff; }
 
   .id-card {
-    margin: 0 18px 10px;
-    padding: 14px 16px;
-    background: linear-gradient(145deg, rgba(17,26,51,0.9), rgba(11,17,34,0.95));
+    margin: 4px 18px 14px;
+    padding: 16px 18px 14px;
+    background: linear-gradient(160deg, #12121e, #0a0a12);
     border: 1px solid rgba(255,255,255,0.04);
-    border-radius: 14px;
-    box-shadow:
-      0 8px 32px rgba(0,0,0,0.4),
-      inset 0 1px 0 rgba(255,255,255,0.03),
-      0 0 60px rgba(0,212,255,0.02);
+    border-radius: 16px;
     position: relative;
     overflow: hidden;
+    box-shadow:
+      0 10px 40px rgba(0,0,0,0.5),
+      inset 0 0 80px rgba(108,92,231,0.02);
   }
   .id-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.2), transparent);
+    top: -50%;
+    right: -30%;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,210,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
   }
-
+  .id-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,210,255,0.12), rgba(168,85,247,0.12), transparent);
+  }
+  .id-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
   .id-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px 14px;
+    gap: 6px 10px;
   }
   .id-item {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 0;
   }
   .id-key {
     font-size: 8px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: rgba(255,255,255,0.25);
   }
   .id-val {
-    font-size: 11px;
-    font-weight: 500;
+    font-size: 11.5px;
+    font-weight: 600;
     color: var(--text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-top: 1px;
   }
-  .id-val.empty {
-    color: var(--muted);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 10px;
-  }
-  .id-full {
-    margin-top: 8px;
+  .id-val.empty { color: var(--muted); font-weight: 400; font-style: normal; font-size: 10px; }
+  .id-row-full {
+    display: flex;
+    gap: 8px;
+    margin-top: 7px;
     padding-top: 8px;
     border-top: 1px solid rgba(255,255,255,0.04);
   }
-
-  .id-actions {
+  .id-row-full .id-key { min-width: 36px; }
+  .id-foot {
     display: flex;
     justify-content: flex-end;
     margin-top: 10px;
@@ -200,209 +176,208 @@
   .btn-id {
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 7px 16px;
-    background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(168,85,247,0.08));
-    border: 1px solid rgba(0,212,255,0.1);
+    gap: 6px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, rgba(0,210,255,0.06), rgba(168,85,247,0.06));
+    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 10px;
     color: var(--text);
     font-size: 11px;
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
-    letter-spacing: 0.02em;
     transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
   }
-  .btn-id::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(168,85,247,0.1));
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  .btn-id:hover::before { opacity: 1; }
   .btn-id:hover {
-    border-color: rgba(0,212,255,0.2);
+    background: linear-gradient(135deg, rgba(0,210,255,0.12), rgba(168,85,247,0.12));
+    border-color: rgba(0,210,255,0.15);
     transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(0,212,255,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
-  .btn-id:active {
-    transform: translateY(0);
-    transition-duration: 0.05s;
-  }
-  .btn-id:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+  .btn-id:active { transform: translateY(0); }
+  .btn-id:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
   .spin { display: inline-block; font-size: 14px; }
   .spin.loading { animation: spin 0.6s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .btn-label { position: relative; z-index: 1; }
 
-  .shields-grid {
+  .shields {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    padding: 0 18px 8px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+    padding: 0 18px 7px;
   }
 
-  .shield-card {
+  .sc {
     position: relative;
-    background: linear-gradient(145deg, rgba(17,26,51,0.8), rgba(11,17,34,0.9));
-    border: 1px solid rgba(255,255,255,0.03);
     border-radius: 12px;
-    padding: 11px 12px;
+    padding: 10px 8px 8px;
+    text-align: center;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
     overflow: hidden;
   }
-  .shield-card::before {
+  .sc::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    border-radius: 12px 12px 0 0;
+    inset: 0;
+    border-radius: 12px;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
   }
-  .shield-card.on::before { opacity: 1; }
-  .shield-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-    border-color: rgba(255,255,255,0.06);
-  }
-  .shield-card:active {
-    transform: translateY(0);
-    transition-duration: 0.05s;
-  }
+  .sc.on::before { opacity: 1; }
+  .sc:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+  .sc:active { transform: translateY(0); }
 
-  .shield-card.hw   { --acc: var(--cyan);    --acc-dim: var(--cyan-dim); }
-  .shield-card.wrtc { --acc: var(--purple);  --acc-dim: var(--purple-dim); }
-  .shield-card.fnt  { --acc: var(--pink);    --acc-dim: var(--pink-dim); }
-  .shield-card.av   { --acc: var(--orange);  --acc-dim: var(--orange-dim); }
-  .shield-card.gps  { --acc: var(--green);   --acc-dim: var(--green-dim); }
-  .shield-card.loc  { --acc: var(--amber);   --acc-dim: var(--amber-dim); }
-
-  .shield-card.on::before { background: var(--acc); }
-  .shield-card.on { border-color: color-mix(in srgb, var(--acc) 15%, transparent); }
-
-  .shield-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 6px;
+  .sc-hw {
+    --a: #00d2ff; --a2: #0099cc;
+    background: linear-gradient(180deg, rgba(0,210,255,0.07) 0%, transparent 100%);
+    border-color: rgba(0,210,255,0.08);
   }
-  .shield-icon {
-    width: 30px;
-    height: 30px;
+  .sc-hw::before { background: linear-gradient(180deg, rgba(0,210,255,0.12) 0%, rgba(0,210,255,0.02) 100%); }
+  .sc-hw.on { border-color: rgba(0,210,255,0.25); box-shadow: 0 0 25px rgba(0,210,255,0.04); }
+
+  .sc-wrtc {
+    --a: #a855f7; --a2: #7c3aed;
+    background: linear-gradient(180deg, rgba(168,85,247,0.07) 0%, transparent 100%);
+    border-color: rgba(168,85,247,0.08);
+  }
+  .sc-wrtc::before { background: linear-gradient(180deg, rgba(168,85,247,0.12) 0%, rgba(168,85,247,0.02) 100%); }
+  .sc-wrtc.on { border-color: rgba(168,85,247,0.25); box-shadow: 0 0 25px rgba(168,85,247,0.04); }
+
+  .sc-fnt {
+    --a: #f472b6; --a2: #ec4899;
+    background: linear-gradient(180deg, rgba(244,114,182,0.07) 0%, transparent 100%);
+    border-color: rgba(244,114,182,0.08);
+  }
+  .sc-fnt::before { background: linear-gradient(180deg, rgba(244,114,182,0.12) 0%, rgba(244,114,182,0.02) 100%); }
+  .sc-fnt.on { border-color: rgba(244,114,182,0.25); box-shadow: 0 0 25px rgba(244,114,182,0.04); }
+
+  .sc-av {
+    --a: #fb923c; --a2: #f97316;
+    background: linear-gradient(180deg, rgba(251,146,60,0.07) 0%, transparent 100%);
+    border-color: rgba(251,146,60,0.08);
+  }
+  .sc-av::before { background: linear-gradient(180deg, rgba(251,146,60,0.12) 0%, rgba(251,146,60,0.02) 100%); }
+  .sc-av.on { border-color: rgba(251,146,60,0.25); box-shadow: 0 0 25px rgba(251,146,60,0.04); }
+
+  .sc-gps {
+    --a: #4ade80; --a2: #22c55e;
+    background: linear-gradient(180deg, rgba(74,222,128,0.07) 0%, transparent 100%);
+    border-color: rgba(74,222,128,0.08);
+  }
+  .sc-gps::before { background: linear-gradient(180deg, rgba(74,222,128,0.12) 0%, rgba(74,222,128,0.02) 100%); }
+  .sc-gps.on { border-color: rgba(74,222,128,0.25); box-shadow: 0 0 25px rgba(74,222,128,0.04); }
+
+  .sc-loc {
+    --a: #facc15; --a2: #eab308;
+    background: linear-gradient(180deg, rgba(250,204,21,0.07) 0%, transparent 100%);
+    border-color: rgba(250,204,21,0.08);
+  }
+  .sc-loc::before { background: linear-gradient(180deg, rgba(250,204,21,0.12) 0%, rgba(250,204,21,0.02) 100%); }
+  .sc-loc.on { border-color: rgba(250,204,21,0.25); box-shadow: 0 0 25px rgba(250,204,21,0.04); }
+
+  .sci {
+    width: 28px;
+    height: 28px;
+    margin: 0 auto 5px;
     border-radius: 8px;
-    background: var(--acc-dim);
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 1;
     transition: all 0.3s ease;
   }
-  .shield-card.on .shield-icon {
-    box-shadow: 0 0 20px color-mix(in srgb, var(--acc) 15%, transparent);
-  }
-  .shield-icon svg {
-    width: 16px;
-    height: 16px;
-    fill: none;
-    stroke: var(--acc);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
+  .sc.on .sci { box-shadow: 0 0 20px color-mix(in srgb, var(--a) 15%, transparent); }
+  .sci svg { width: 15px; height: 15px; fill: none; stroke: var(--a); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-  .shield-name {
-    font-size: 11px;
-    font-weight: 600;
+  .scn {
+    font-size: 9.5px;
+    font-weight: 700;
     color: var(--text);
-    letter-spacing: 0.01em;
+    letter-spacing: 0.04em;
+    position: relative;
+    z-index: 1;
   }
-  .shield-sub {
-    font-size: 9px;
-    color: var(--muted);
-    margin-top: 1px;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .scs {
+    font-size: 7px;
+    font-weight: 600;
+    color: var(--a);
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: relative;
+    z-index: 1;
   }
+  .sc.on .scs { opacity: 1; }
+  .sc.off .scs { color: var(--muted); }
 
-  .sw { position: relative; width: 32px; height: 18px; flex-shrink: 0; }
+  .sw { position: relative; width: 30px; height: 16px; margin: 5px auto 0; display: block; z-index: 1; }
   .sw input { opacity: 0; width: 0; height: 0; position: absolute; }
   .track {
     position: absolute; inset: 0;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.05);
     border-radius: 99px;
     cursor: pointer;
     transition: all 0.25s ease;
-    border: 1px solid rgba(255,255,255,0.04);
   }
   .track::before {
     content: '';
     position: absolute;
-    width: 12px; height: 12px;
-    left: 2px; top: 2px;
-    background: var(--muted);
+    width: 10px; height: 10px;
+    left: 3px; top: 3px;
+    background: #444;
     border-radius: 50%;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
   }
-  .sw input:checked + .track {
-    background: var(--acc, var(--cyan));
-    border-color: var(--acc, var(--cyan));
-    box-shadow: 0 0 12px color-mix(in srgb, var(--acc, var(--cyan)) 25%, transparent);
-  }
-  .sw input:checked + .track::before {
+  .sc.on .track { background: var(--a); box-shadow: 0 0 10px color-mix(in srgb, var(--a) 20%, transparent); }
+  .sc.on .track::before {
     transform: translateX(14px);
     background: #fff;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
   }
 
-  .footer {
-    padding: 10px 18px 16px;
-    font-size: 10px;
+  .ft {
+    padding: 10px 18px 14px;
+    font-size: 9.5px;
     color: var(--muted);
-    line-height: 1.5;
     text-align: center;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
     position: relative;
   }
-  .footer::before {
+  .ft::before {
     content: '';
     position: absolute;
     top: 0;
     left: 18px;
     right: 18px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .shield-card, .btn-id, .spin { transition: none !important; animation: none !important; }
+    .sc, .btn-id, .spin { transition: none !important; animation: none !important; }
   }
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="brand-wrap">
-    <div class="brand-icon">◈</div>
-    <span class="brand">MASKWARE</span>
+
+<div class="top">
+  <div class="logo">
+    <div class="logo-mark">✦</div>
+    <span class="logo-txt">MASKWARE</span>
   </div>
-  <div class="badge on" id="badge">
-    <span class="badge-dot"></span>
+  <div class="status on" id="badge">
+    <span class="status-dot"></span>
     <span id="badge-txt">ACTIVE</span>
   </div>
 </div>
 
-<div class="section-title">Identity</div>
-
 <div class="id-card">
+  <div class="id-label">Identity</div>
   <div class="id-grid">
     <div class="id-item">
       <span class="id-key">GPU</span>
@@ -421,97 +396,75 @@
       <span class="id-val empty" id="d-screen">—</span>
     </div>
   </div>
-  <div class="id-full">
-    <div class="id-item">
-      <span class="id-key">GEO</span>
-      <span class="id-val empty" id="d-geo">—</span>
-    </div>
+  <div class="id-row-full">
+    <span class="id-key">GEO</span>
+    <span class="id-val empty" id="d-geo">—</span>
   </div>
-  <div class="id-actions">
+  <div class="id-foot">
     <button class="btn-id" id="btn-new-id">
-      <span class="spin" id="spin-icon">↻</span>
-      <span class="btn-label" id="btn-label">Generate New Identity</span>
+      <span class="spin" id="spin-icon">✦</span>
+      <span id="btn-label">New Identity</span>
     </button>
   </div>
 </div>
 
-<div class="section-title">Shields</div>
-
-<div class="shields-grid">
-  <!-- Hardware -->
-  <div class="shield-card hw" id="card-hardware">
-    <div class="shield-top">
-      <div class="shield-icon">
-        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M2 12h2M20 12h2M12 2v2M12 20v2"/></svg>
-      </div>
-      <label class="sw"><input type="checkbox" id="t-hardware"><span class="track"></span></label>
+<div class="shields">
+  <div class="sc sc-hw off" id="card-hardware">
+    <div class="sci">
+      <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M2 12h2M20 12h2M12 2v2M12 20v2"/></svg>
     </div>
-    <div class="shield-name">Hardware</div>
-    <div class="shield-sub">CPU · GPU · Screen · Canvas · WebGL</div>
+    <div class="scn">HW</div>
+    <span class="scs" id="s-hardware">ON</span>
+    <label class="sw"><input type="checkbox" id="t-hardware"><span class="track"></span></label>
   </div>
 
-  <!-- WebRTC -->
-  <div class="shield-card wrtc" id="card-webrtc">
-    <div class="shield-top">
-      <div class="shield-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      </div>
-      <label class="sw"><input type="checkbox" id="t-webrtc"><span class="track"></span></label>
+  <div class="sc sc-wrtc off" id="card-webrtc">
+    <div class="sci">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
     </div>
-    <div class="shield-name">WebRTC</div>
-    <div class="shield-sub">STUN candidate stripping</div>
+    <div class="scn">WRT</div>
+    <span class="scs" id="s-webrtc">ON</span>
+    <label class="sw"><input type="checkbox" id="t-webrtc"><span class="track"></span></label>
   </div>
 
-  <!-- Fonts -->
-  <div class="shield-card fnt" id="card-fonts">
-    <div class="shield-top">
-      <div class="shield-icon">
-        <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
-      </div>
-      <label class="sw"><input type="checkbox" id="t-fonts"><span class="track"></span></label>
+  <div class="sc sc-fnt off" id="card-fonts">
+    <div class="sci">
+      <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
     </div>
-    <div class="shield-name">Fonts</div>
-    <div class="shield-sub">measureText noise · FontFaceSet</div>
+    <div class="scn">FNT</div>
+    <span class="scs" id="s-fonts">ON</span>
+    <label class="sw"><input type="checkbox" id="t-fonts"><span class="track"></span></label>
   </div>
 
-  <!-- AV -->
-  <div class="shield-card av" id="card-av">
-    <div class="shield-top">
-      <div class="shield-icon">
-        <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-      </div>
-      <label class="sw"><input type="checkbox" id="t-av"><span class="track"></span></label>
+  <div class="sc sc-av off" id="card-av">
+    <div class="sci">
+      <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
     </div>
-    <div class="shield-name">Mic &amp; Camera</div>
-    <div class="shield-sub">Silent audio · black video</div>
+    <div class="scn">AV</div>
+    <span class="scs" id="s-av">ON</span>
+    <label class="sw"><input type="checkbox" id="t-av"><span class="track"></span></label>
   </div>
 
-  <!-- GPS -->
-  <div class="shield-card gps" id="card-gps">
-    <div class="shield-top">
-      <div class="shield-icon">
-        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
-      <label class="sw"><input type="checkbox" id="t-geo"><span class="track"></span></label>
+  <div class="sc sc-gps off" id="card-gps">
+    <div class="sci">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
     </div>
-    <div class="shield-name">GPS</div>
-    <div class="shield-sub">Random city · jittered coords</div>
+    <div class="scn">GPS</div>
+    <span class="scs" id="s-gps">ON</span>
+    <label class="sw"><input type="checkbox" id="t-geo"><span class="track"></span></label>
   </div>
 
-  <!-- Locale -->
-  <div class="shield-card loc" id="card-locale">
-    <div class="shield-top">
-      <div class="shield-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      </div>
-      <label class="sw"><input type="checkbox" id="t-locale"><span class="track"></span></label>
+  <div class="sc sc-loc off" id="card-locale">
+    <div class="sci">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
     </div>
-    <div class="shield-name">Locale</div>
-    <div class="shield-sub">UTC · en-US</div>
+    <div class="scn">LOC</div>
+    <span class="scs" id="s-locale">ON</span>
+    <label class="sw"><input type="checkbox" id="t-locale"><span class="track"></span></label>
   </div>
 </div>
 
-<div class="footer">Reload tab after toggling a shield</div>
+<div class="ft">Reload tab after toggling</div>
 
 <script src="popup.js"></script>
 </body>
