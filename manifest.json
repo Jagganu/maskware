@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "Maskware — Hardware Fingerprint Mask",
+  "version": "1.2.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "maskware@local.extension",
+      "strict_min_version": "128.0"
+    }
+  },
+  "permissions": ["storage", "scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["bridge.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png"
+    },
+    "default_title": "Maskware"
+  },
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  }
+}
