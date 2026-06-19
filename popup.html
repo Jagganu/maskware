@@ -4,467 +4,240 @@
 <meta charset="UTF-8">
 <title>Maskware</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #08080e;
-    --surface: #0e0e18;
-    --card: #141420;
-    --text: #eeeef4;
-    --muted: #6a6a82;
-    --border: rgba(255,255,255,0.04);
-    --glow: #6c5ce7;
-
-    --hw-clr: #00d2ff;
-    --wrtc-clr: #a855f7;
-    --fnt-clr: #f472b6;
-    --av-clr: #fb923c;
-    --gps-clr: #4ade80;
-    --loc-clr: #facc15;
+    --bg:         #0d0f14;
+    --surface:    #141720;
+    --border:     #1f2330;
+    --text:       #dde2ea;
+    --muted:      #4e5566;
+    --accent:     #4fd1c5;
+    --accent-bg:  #0f2e2c;
+    --accent-dim: #1c3a38;
+    --off:        #272c3a;
   }
-
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    width: 352px;
+    width: 340px;
     background: var(--bg);
-    background-image:
-      radial-gradient(ellipse 120% 60% at 50% -10%, rgba(108,92,231,0.06) 0%, transparent 70%),
-      radial-gradient(ellipse 80% 50% at 80% 30%, rgba(0,210,255,0.03) 0%, transparent 60%);
     color: var(--text);
-    font-family: 'Outfit', system-ui, sans-serif;
-    font-size: 13px;
+    font-family: -apple-system, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+    font-size: 12.5px;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
   }
-
-  .top {
+  .head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 18px 10px;
+    padding: 13px 16px 12px;
   }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .logo-mark {
-    width: 26px;
-    height: 26px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, #00d2ff, #a855f7, #f472b6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .brand {
     font-size: 13px;
     font-weight: 800;
-    color: #fff;
-    box-shadow: 0 3px 12px rgba(0,210,255,0.25);
+    letter-spacing: 0.14em;
+    color: var(--accent);
   }
-  .logo-txt {
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: 0.22em;
-    background: linear-gradient(135deg, #00d2ff 0%, #a855f7 50%, #f472b6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .status {
+  .badge {
     display: flex;
     align-items: center;
     gap: 5px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    transition: color 0.15s;
+  }
+  .badge.on { color: var(--accent); }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+    transition: background 0.15s;
+  }
+  .badge.on .dot { background: var(--accent); }
+  .line { height: 1px; background: var(--border); }
+  .sec {
+    padding: 10px 16px 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .id-card {
+    margin: 0 16px 8px;
+    padding: 10px 13px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
+  }
+  .id-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 3.5px 0;
+  }
+  .id-row:first-child { padding-top: 0; }
+  .id-row:last-child  { padding-bottom: 0; }
+  .id-key {
+    width: 52px;
+    flex-shrink: 0;
     font-size: 9.5px;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.04);
     color: var(--muted);
-    transition: all 0.4s ease;
-  }
-  .status.on { color: #00d2ff; border-color: rgba(0,210,255,0.15); background: rgba(0,210,255,0.06); }
-  .status-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--muted);
-    transition: all 0.4s ease;
-  }
-  .status.on .status-dot { background: #00d2ff; box-shadow: 0 0 8px #00d2ff; }
-
-  .id-card {
-    margin: 4px 18px 14px;
-    padding: 16px 18px 14px;
-    background: linear-gradient(160deg, #12121e, #0a0a12);
-    border: 1px solid rgba(255,255,255,0.04);
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
-    box-shadow:
-      0 10px 40px rgba(0,0,0,0.5),
-      inset 0 0 80px rgba(108,92,231,0.02);
-  }
-  .id-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -30%;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,210,255,0.04) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .id-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,210,255,0.12), rgba(168,85,247,0.12), transparent);
-  }
-  .id-label {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-  .id-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px 10px;
-  }
-  .id-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .id-key {
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.25);
   }
   .id-val {
     font-size: 11.5px;
-    font-weight: 600;
     color: var(--text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding-top: 1px;
   }
-  .id-val.empty { color: var(--muted); font-weight: 400; font-style: normal; font-size: 10px; }
-  .id-row-full {
-    display: flex;
-    gap: 8px;
-    margin-top: 7px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255,255,255,0.04);
-  }
-  .id-row-full .id-key { min-width: 36px; }
-  .id-foot {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-  }
+  .id-val.empty { color: var(--muted); font-style: italic; }
+  .id-actions { display: flex; justify-content: flex-end; padding: 0 16px 13px; }
   .btn-id {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 14px;
-    background: linear-gradient(135deg, rgba(0,210,255,0.06), rgba(168,85,247,0.06));
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px;
-    color: var(--text);
-    font-size: 11px;
-    font-weight: 600;
-    font-family: inherit;
+    padding: 6px 13px;
+    background: transparent;
+    border: 1px solid var(--accent-dim);
+    border-radius: 6px;
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+    transition: background 0.12s, border-color 0.12s, opacity 0.1s;
   }
-  .btn-id:hover {
-    background: linear-gradient(135deg, rgba(0,210,255,0.12), rgba(168,85,247,0.12));
-    border-color: rgba(0,210,255,0.15);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  }
-  .btn-id:active { transform: translateY(0); }
-  .btn-id:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
-  .spin { display: inline-block; font-size: 14px; }
+  .btn-id:hover  { background: var(--accent-dim); border-color: var(--accent); }
+  .btn-id:active { opacity: 0.6; }
+  .btn-id:disabled { opacity: 0.4; cursor: default; }
+  .spin { display: inline-block; }
   .spin.loading { animation: spin 0.6s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .shields {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 7px;
-    padding: 0 18px 7px;
-  }
-
-  .sc {
-    position: relative;
-    border-radius: 12px;
-    padding: 10px 8px 8px;
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-    overflow: hidden;
-  }
-  .sc::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 12px;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .sc.on::before { opacity: 1; }
-  .sc:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
-  .sc:active { transform: translateY(0); }
-
-  .sc-hw {
-    --a: #00d2ff; --a2: #0099cc;
-    background: linear-gradient(180deg, rgba(0,210,255,0.07) 0%, transparent 100%);
-    border-color: rgba(0,210,255,0.08);
-  }
-  .sc-hw::before { background: linear-gradient(180deg, rgba(0,210,255,0.12) 0%, rgba(0,210,255,0.02) 100%); }
-  .sc-hw.on { border-color: rgba(0,210,255,0.25); box-shadow: 0 0 25px rgba(0,210,255,0.04); }
-
-  .sc-wrtc {
-    --a: #a855f7; --a2: #7c3aed;
-    background: linear-gradient(180deg, rgba(168,85,247,0.07) 0%, transparent 100%);
-    border-color: rgba(168,85,247,0.08);
-  }
-  .sc-wrtc::before { background: linear-gradient(180deg, rgba(168,85,247,0.12) 0%, rgba(168,85,247,0.02) 100%); }
-  .sc-wrtc.on { border-color: rgba(168,85,247,0.25); box-shadow: 0 0 25px rgba(168,85,247,0.04); }
-
-  .sc-fnt {
-    --a: #f472b6; --a2: #ec4899;
-    background: linear-gradient(180deg, rgba(244,114,182,0.07) 0%, transparent 100%);
-    border-color: rgba(244,114,182,0.08);
-  }
-  .sc-fnt::before { background: linear-gradient(180deg, rgba(244,114,182,0.12) 0%, rgba(244,114,182,0.02) 100%); }
-  .sc-fnt.on { border-color: rgba(244,114,182,0.25); box-shadow: 0 0 25px rgba(244,114,182,0.04); }
-
-  .sc-av {
-    --a: #fb923c; --a2: #f97316;
-    background: linear-gradient(180deg, rgba(251,146,60,0.07) 0%, transparent 100%);
-    border-color: rgba(251,146,60,0.08);
-  }
-  .sc-av::before { background: linear-gradient(180deg, rgba(251,146,60,0.12) 0%, rgba(251,146,60,0.02) 100%); }
-  .sc-av.on { border-color: rgba(251,146,60,0.25); box-shadow: 0 0 25px rgba(251,146,60,0.04); }
-
-  .sc-gps {
-    --a: #4ade80; --a2: #22c55e;
-    background: linear-gradient(180deg, rgba(74,222,128,0.07) 0%, transparent 100%);
-    border-color: rgba(74,222,128,0.08);
-  }
-  .sc-gps::before { background: linear-gradient(180deg, rgba(74,222,128,0.12) 0%, rgba(74,222,128,0.02) 100%); }
-  .sc-gps.on { border-color: rgba(74,222,128,0.25); box-shadow: 0 0 25px rgba(74,222,128,0.04); }
-
-  .sc-loc {
-    --a: #facc15; --a2: #eab308;
-    background: linear-gradient(180deg, rgba(250,204,21,0.07) 0%, transparent 100%);
-    border-color: rgba(250,204,21,0.08);
-  }
-  .sc-loc::before { background: linear-gradient(180deg, rgba(250,204,21,0.12) 0%, rgba(250,204,21,0.02) 100%); }
-  .sc-loc.on { border-color: rgba(250,204,21,0.25); box-shadow: 0 0 25px rgba(250,204,21,0.04); }
-
-  .sci {
-    width: 28px;
-    height: 28px;
-    margin: 0 auto 5px;
-    border-radius: 8px;
+  .feature {
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-    transition: all 0.3s ease;
+    justify-content: space-between;
+    padding: 9px 16px;
+    gap: 12px;
   }
-  .sc.on .sci { box-shadow: 0 0 20px color-mix(in srgb, var(--a) 15%, transparent); }
-  .sci svg { width: 15px; height: 15px; fill: none; stroke: var(--a); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-  .scn {
-    font-size: 9.5px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.04em;
-    position: relative;
-    z-index: 1;
-  }
-  .scs {
-    font-size: 7px;
-    font-weight: 600;
-    color: var(--a);
-    margin-top: 2px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    position: relative;
-    z-index: 1;
-  }
-  .sc.on .scs { opacity: 1; }
-  .sc.off .scs { color: var(--muted); }
-
-  .sw { position: relative; width: 30px; height: 16px; margin: 5px auto 0; display: block; z-index: 1; }
-  .sw input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .feat-left { flex: 1; min-width: 0; }
+  .feat-name { font-size: 12.5px; font-weight: 500; }
+  .feat-sub  { font-size: 10.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+  .sw { position: relative; width: 34px; height: 20px; flex-shrink: 0; }
+  .sw input { opacity: 0; width: 0; height: 0; }
   .track {
     position: absolute; inset: 0;
-    background: rgba(255,255,255,0.05);
+    background: var(--off);
     border-radius: 99px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: background 0.14s;
   }
   .track::before {
     content: '';
     position: absolute;
-    width: 10px; height: 10px;
+    width: 14px; height: 14px;
     left: 3px; top: 3px;
-    background: #444;
+    background: var(--bg);
     border-radius: 50%;
-    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 0.14s;
   }
-  .sc.on .track { background: var(--a); box-shadow: 0 0 10px color-mix(in srgb, var(--a) 20%, transparent); }
-  .sc.on .track::before {
-    transform: translateX(14px);
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-  }
-
-  .ft {
-    padding: 10px 18px 14px;
-    font-size: 9.5px;
+  .sw input:checked + .track { background: var(--accent); }
+  .sw input:checked + .track::before { transform: translateX(14px); }
+  .sw input:focus-visible + .track { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .foot {
+    padding: 8px 16px 13px;
+    font-size: 11px;
     color: var(--muted);
-    text-align: center;
-    letter-spacing: 0.04em;
-    position: relative;
-  }
-  .ft::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 18px;
-    right: 18px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .sc, .btn-id, .spin { transition: none !important; animation: none !important; }
+    line-height: 1.5;
   }
 </style>
 </head>
 <body>
 
-<div class="top">
-  <div class="logo">
-    <div class="logo-mark">✦</div>
-    <span class="logo-txt">MASKWARE</span>
-  </div>
-  <div class="status on" id="badge">
-    <span class="status-dot"></span>
+<div class="head">
+  <span class="brand">MASKWARE</span>
+  <div class="badge on" id="badge">
+    <span class="dot"></span>
     <span id="badge-txt">ACTIVE</span>
   </div>
 </div>
 
+<div class="line"></div>
+
+<div class="sec">Current Identity</div>
 <div class="id-card">
-  <div class="id-label">Identity</div>
-  <div class="id-grid">
-    <div class="id-item">
-      <span class="id-key">GPU</span>
-      <span class="id-val empty" id="d-gpu">—</span>
-    </div>
-    <div class="id-item">
-      <span class="id-key">CPU</span>
-      <span class="id-val empty" id="d-cpu">—</span>
-    </div>
-    <div class="id-item">
-      <span class="id-key">OS</span>
-      <span class="id-val empty" id="d-os">—</span>
-    </div>
-    <div class="id-item">
-      <span class="id-key">SCREEN</span>
-      <span class="id-val empty" id="d-screen">—</span>
-    </div>
-  </div>
-  <div class="id-row-full">
-    <span class="id-key">GEO</span>
-    <span class="id-val empty" id="d-geo">—</span>
-  </div>
-  <div class="id-foot">
-    <button class="btn-id" id="btn-new-id">
-      <span class="spin" id="spin-icon">✦</span>
-      <span id="btn-label">New Identity</span>
-    </button>
-  </div>
+  <div class="id-row"><span class="id-key">GPU</span><span class="id-val empty" id="d-gpu">—</span></div>
+  <div class="id-row"><span class="id-key">CPU</span><span class="id-val empty" id="d-cpu">—</span></div>
+  <div class="id-row"><span class="id-key">OS</span><span class="id-val empty" id="d-os">—</span></div>
+  <div class="id-row"><span class="id-key">SCREEN</span><span class="id-val empty" id="d-screen">—</span></div>
+  <div class="id-row"><span class="id-key">GEO</span><span class="id-val empty" id="d-geo">—</span></div>
+</div>
+<div class="id-actions">
+  <button class="btn-id" id="btn-new-id">
+    <span class="spin" id="spin-icon">↻</span>
+    <span id="btn-label">Generate New Identity</span>
+  </button>
 </div>
 
-<div class="shields">
-  <div class="sc sc-hw off" id="card-hardware">
-    <div class="sci">
-      <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M2 12h2M20 12h2M12 2v2M12 20v2"/></svg>
-    </div>
-    <div class="scn">HW</div>
-    <span class="scs" id="s-hardware">ON</span>
-    <label class="sw"><input type="checkbox" id="t-hardware"><span class="track"></span></label>
-  </div>
+<div class="line"></div>
 
-  <div class="sc sc-wrtc off" id="card-webrtc">
-    <div class="sci">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-    </div>
-    <div class="scn">WRT</div>
-    <span class="scs" id="s-webrtc">ON</span>
-    <label class="sw"><input type="checkbox" id="t-webrtc"><span class="track"></span></label>
-  </div>
+<div class="sec">Shields</div>
 
-  <div class="sc sc-fnt off" id="card-fonts">
-    <div class="sci">
-      <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
-    </div>
-    <div class="scn">FNT</div>
-    <span class="scs" id="s-fonts">ON</span>
-    <label class="sw"><input type="checkbox" id="t-fonts"><span class="track"></span></label>
+<div class="feature">
+  <div class="feat-left">
+    <div class="feat-name">Hardware fingerprint</div>
+    <div class="feat-sub">CPU · GPU · Screen · OS · Canvas · WebGL · Audio</div>
   </div>
-
-  <div class="sc sc-av off" id="card-av">
-    <div class="sci">
-      <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-    </div>
-    <div class="scn">AV</div>
-    <span class="scs" id="s-av">ON</span>
-    <label class="sw"><input type="checkbox" id="t-av"><span class="track"></span></label>
-  </div>
-
-  <div class="sc sc-gps off" id="card-gps">
-    <div class="sci">
-      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-    </div>
-    <div class="scn">GPS</div>
-    <span class="scs" id="s-gps">ON</span>
-    <label class="sw"><input type="checkbox" id="t-geo"><span class="track"></span></label>
-  </div>
-
-  <div class="sc sc-loc off" id="card-locale">
-    <div class="sci">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-    </div>
-    <div class="scn">LOC</div>
-    <span class="scs" id="s-locale">ON</span>
-    <label class="sw"><input type="checkbox" id="t-locale"><span class="track"></span></label>
-  </div>
+  <label class="sw"><input type="checkbox" id="t-hardware"><span class="track"></span></label>
 </div>
 
-<div class="ft">Reload tab after toggling</div>
+<div class="feature">
+  <div class="feat-left">
+    <div class="feat-name">WebRTC IP leak</div>
+    <div class="feat-sub">Strips STUN candidates that expose real IP past a VPN</div>
+  </div>
+  <label class="sw"><input type="checkbox" id="t-webrtc"><span class="track"></span></label>
+</div>
+
+<div class="feature">
+  <div class="feat-left">
+    <div class="feat-name">Font detection</div>
+    <div class="feat-sub">Noise on canvas text width · block FontFaceSet probing</div>
+  </div>
+  <label class="sw"><input type="checkbox" id="t-fonts"><span class="track"></span></label>
+</div>
+
+<div class="feature">
+  <div class="feat-left">
+    <div class="feat-name">Mic &amp; Camera block</div>
+    <div class="feat-sub">Returns silence &amp; black frames even when permission is granted</div>
+  </div>
+  <label class="sw"><input type="checkbox" id="t-av"><span class="track"></span></label>
+</div>
+
+<div class="feature">
+  <div class="feat-left">
+    <div class="feat-name">GPS location</div>
+    <div class="feat-sub">Reports a random world city with jitter each page load</div>
+  </div>
+  <label class="sw"><input type="checkbox" id="t-geo"><span class="track"></span></label>
+</div>
+
+<div class="feature">
+  <div class="feat-left">
+    <div class="feat-name">Timezone &amp; language</div>
+    <div class="feat-sub">Reports UTC · en-US — dates on sites will shift to UTC</div>
+  </div>
+  <label class="sw"><input type="checkbox" id="t-locale"><span class="track"></span></label>
+</div>
+
+<div class="line"></div>
+<div class="foot">Reload open tabs after toggling a shield.</div>
 
 <script src="popup.js"></script>
 </body>
