@@ -40,17 +40,18 @@ Open the popup and see your current fake identity — GPU, CPU cores, OS, screen
 
 ## Installation
 
-### Chrome / Edge / Brave (MV3)
+### 1. Set the right manifest
 
-```
-chrome://extensions → Developer mode → Load unpacked → select folder
+```powershell
+.\build.ps1 -Browser chrome   # Chrome / Edge / Brave
+.\build.ps1 -Browser firefox  # Firefox
 ```
 
-### Firefox
+### 2. Load the extension
 
-```
-about:debugging#/runtime/this-firefox → Load Temporary Add-on → select manifest.json
-```
+**Chrome / Edge / Brave:** `chrome://extensions` → Developer mode → **Load unpacked** → select folder
+
+**Firefox:** `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → select `manifest.json`
 
 > Temporary extensions unload on browser restart. For persistent Firefox install, submit an **unlisted** build at [addons.mozilla.org](https://addons.mozilla.org) or use Firefox Developer/Nightly with `xpinstall.signatures.required = false`.
 
@@ -80,7 +81,8 @@ document_start (MAIN world)         document_idle (ISOLATED world)
                                              ▼
                                      ┌──────────────────┐
                                      │  background.js   │
-                                     │ (service worker) │
+                                     │ (background page │
+                                     │  or svc worker)  │
                                      │ stores profile & │
                                      │ manages shields  │
                                      └────────┬─────────┘
@@ -100,8 +102,11 @@ document_start (MAIN world)         document_idle (ISOLATED world)
 
 ```
 maskware/
-├── manifest.json          MV3 manifest (works on Chrome & Firefox)
-├── background.js          Service worker — shield registration & state
+├── manifest.chrome.json   Chrome manifest (background.service_worker)
+├── manifest.firefox.json  Firefox manifest (background.scripts)
+├── manifest.json          Active manifest (copy of chrome or firefox)
+├── build.ps1              Switch manifest per browser
+├── background.js          Background page / service worker
 ├── bridge.js              ISOLATED-world content script — relays profile
 ├── popup.html             Dashboard UI
 ├── popup.js               Dashboard logic
