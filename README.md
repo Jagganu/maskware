@@ -18,7 +18,7 @@ Maskware is an open-source browser extension that intercepts **6 categories** of
 | **Hardware fingerprint** | ✅ ON | Fakes CPU cores, GPU vendor/renderer, screen resolution, OS platform, device memory, network info & battery. Injects noise on Canvas `getImageData`, WebGL `readPixels`, and AudioContext output. |
 | **WebRTC IP leak** | ✅ ON | Strips `srflx` (STUN) ICE candidates from SDP & events — prevents your real public IP leaking past a VPN. |
 | **Font detection** | ✅ ON | Sub-pixel noise on `measureText().width` + blocks `FontFaceSet.check()`/`.load()` for non-standard fonts. |
-| **Mic & Camera** | ✅ ON | Real permission prompt shows (honest UX), then returns a fake stream — silent audio + black video. Page gets a live `MediaStream` with zero real content. |
+| **Mic & Camera** | ✅ ON | Real permission prompt shows (honest UX), then returns a fake stream — silent audio + black video. Page gets a live `MediaStream` with zero real content. `enumerateDevices()` returns generic labels (Camera / Microphone / Speaker). |
 | **GPS location** | ✅ ON | Random city from 20 world capitals, jittered ±1 km. Fresh per page load. |
 | **Timezone & locale** | ❌ OFF | Forces UTC timezone & `en-US` locale. Off by default (shifts date formatting everywhere). |
 
@@ -128,7 +128,7 @@ maskware/
 | WebRTC connectivity | Only `srflx` stripped; `host` (mDNS) and `relay` (TURN) preserved — calls still connect |
 | WebGL stability | Only VENDOR/RENDERER strings faked; capability values left real to avoid crashes |
 | Font detection gap | CSS `@font-face { src: local() }` is engine-level, unreachable from JS — only JS vectors covered |
-| enumerateDevices() | Left untouched — faking device lists breaks calling-app device pickers |
+| enumerateDevices() | Labels replaced with generic names (Camera / Microphone / Speaker) to block device-name fingerprinting. Real `deviceId` / `groupId` preserved so app device pickers still function. |
 | `document_start` injection | MAIN-world scripts run before any page JS, so overrides are live before fingerprinters fire |
 
 ---
