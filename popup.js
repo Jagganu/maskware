@@ -1,20 +1,29 @@
 const browser = globalThis.browser || globalThis.chrome;
 
 const FEATURES = ['hardware', 'webrtc', 'fonts', 'av', 'geo', 'locale'];
-const DEFAULTS  = { hardware:true, webrtc:true, fonts:true, av:true, geo:true, locale:false };
+const DEFAULTS = { hardware:true, webrtc:true, fonts:true, av:true, geo:true, locale:false };
 
 const ELS = {};
-for (const k of FEATURES) ELS[k] = document.getElementById(`t-${k}`);
+const CARDS = {};
+for (const k of FEATURES) {
+  ELS[k] = document.getElementById(`t-${k}`);
+  CARDS[k] = document.getElementById(`card-${k}`);
+}
 
 browser.storage.local.get(FEATURES).then((stored) => {
-  for (const k of FEATURES)
-    ELS[k].checked = stored[k] !== undefined ? stored[k] : DEFAULTS[k];
+  for (const k of FEATURES) {
+    const on = stored[k] !== undefined ? stored[k] : DEFAULTS[k];
+    ELS[k].checked = on;
+    CARDS[k]?.classList.toggle('on', on);
+  }
   updateBadge();
 });
 
 for (const k of FEATURES) {
   ELS[k].addEventListener('change', () => {
-    browser.runtime.sendMessage({ type:'maskware-toggle', feature:k, enabled:ELS[k].checked });
+    const on = ELS[k].checked;
+    CARDS[k]?.classList.toggle('on', on);
+    browser.runtime.sendMessage({ type:'maskware-toggle', feature:k, enabled:on });
     updateBadge();
   });
 }
@@ -29,7 +38,7 @@ function updateBadge() {
 function setVal(id, val) {
   const el = document.getElementById(id); if (!el) return;
   if (val) { el.textContent = val; el.classList.remove('empty'); }
-  else      { el.textContent = '—'; el.classList.add('empty');   }
+  else     { el.textContent = '—'; el.classList.add('empty'); }
 }
 
 function renderProfile(p) {
