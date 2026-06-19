@@ -3,6 +3,9 @@
 
   if (!navigator?.mediaDevices) return;
 
+  const origGUM = MediaDevices.prototype.getUserMedia;
+  const origGDM = MediaDevices.prototype.getDisplayMedia;
+
   function buildFakeStream(constraints) {
     const stream = new MediaStream();
     const c = constraints || {};
@@ -55,21 +58,24 @@
     } catch(_) { return new MediaStream(); }
   }
 
-  try {
-    const g = navigator.mediaDevices;
-    const origGUM = g.getUserMedia.bind(g);
-    g.getUserMedia = async function (c) {
-      try {
-        (await origGUM(c)).getTracks().forEach(t => t.stop());
-      } catch(_) {}
-      return buildFakeStream(c);
-    };
-    const origGDM = g.getDisplayMedia.bind(g);
-    g.getDisplayMedia = async function (c) {
-      try {
-        (await origGDM(c)).getTracks().forEach(t => t.stop());
-      } catch(_) {}
-      return buildBlackScreen();
-    };
-  } catch(_) {}
+  async function gumOverride(c) {
+    try {
+      (await origGUM.call(navigator.mediaDevices, c)).getTracks().forEach(t => t.stop());
+    } catch(_) {}
+    return buildFakeStream(c);
+  }
+
+  async function gdmOverride(c) {
+    try {
+      (await origGDM.call(navigator.mediaDevices, c)).getTracks().forEach(t => t.stop());
+    } catch(_) {}
+    return buildBlackScreen();
+  }
+
+  if (window.MediaDevices) {
+    try { Object.defineProperty(MediaDevices.prototype, 'getUserMedia', { value: gumOverride, configurable: true, writable: true }); } catch(_) {}
+    try { Object.defineProperty(MediaDevices.prototype, 'getDisplayMedia', { value: gdmOverride, configurable: true, writable: true }); } catch(_) {}
+  }
+  try { Object.defineProperty(navigator.mediaDevices, 'getUserMedia', { value: gumOverride, configurable: true, writable: true }); } catch(_) {}
+  try { Object.defineProperty(navigator.mediaDevices, 'getDisplayMedia', { value: gdmOverride, configurable: true, writable: true }); } catch(_) {}
 })();
