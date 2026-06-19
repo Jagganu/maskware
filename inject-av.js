@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  if (!window.MediaDevices || !navigator.mediaDevices) return;
+  if (!navigator?.mediaDevices) return;
 
   function buildFakeStream(constraints) {
     const stream = new MediaStream();
@@ -11,23 +11,26 @@
       try {
         const actx = new AudioContext();
         const dest = actx.createMediaStreamDestination();
-        const track = dest.stream.getAudioTracks()[0];
-        if (track) stream.addTrack(track);
+        const osc = actx.createOscillator();
+        osc.frequency.value = 0;
+        osc.connect(dest);
+        osc.start();
+        const t = dest.stream.getAudioTracks()[0];
+        if (t) stream.addTrack(t);
       } catch(_) {}
     }
 
     if (c.video) {
       try {
         const vc = typeof c.video === 'object' ? c.video : {};
-        const w = vc.width?.ideal  || vc.width  || 640;
+        const w = vc.width?.ideal || vc.width || 640;
         const h = vc.height?.ideal || vc.height || 480;
-        const canvas = document.createElement('canvas');
-        canvas.width = w; canvas.height = h;
+        const canvas = Object.assign(document.createElement('canvas'), { width: w, height: h });
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#0a0a0a';
+        ctx.fillStyle = '#000';
         ctx.fillRect(0, 0, w, h);
-        const track = canvas.captureStream(0).getVideoTracks()[0];
-        if (track) stream.addTrack(track);
+        const t = canvas.captureStream(30).getVideoTracks()[0];
+        if (t) stream.addTrack(t);
       } catch(_) {}
     }
 
@@ -35,45 +38,38 @@
   }
 
   function buildBlackScreen() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1920; canvas.height = 1080;
+    const canvas = Object.assign(document.createElement('canvas'), { width: 1920, height: 1080 });
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#0a0a0a';
+    ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, 1920, 1080);
-    ctx.fillStyle = '#2a2a2a';
+    ctx.fillStyle = '#222';
     ctx.font = 'bold 26px system-ui, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('Screen capture blocked by Maskware', 960, 540);
-    const stream = new MediaStream();
+    ctx.fillText('Blocked by Maskware', 960, 540);
     try {
-      const track = canvas.captureStream(0).getVideoTracks()[0];
-      if (track) stream.addTrack(track);
-    } catch(_) {}
-    return stream;
+      const stream = new MediaStream();
+      const t = canvas.captureStream(30).getVideoTracks()[0];
+      if (t) stream.addTrack(t);
+      return stream;
+    } catch(_) { return new MediaStream(); }
   }
 
-  const proto = MediaDevices.prototype;
-
-  if (proto.getUserMedia) {
-    const origGUM = proto.getUserMedia;
-    proto.getUserMedia = async function(constraints) {
+  try {
+    const g = navigator.mediaDevices;
+    const origGUM = g.getUserMedia.bind(g);
+    g.getUserMedia = async function (c) {
       try {
-        const real = await origGUM.call(this, constraints);
-        real.getTracks().forEach(t => t.stop());
+        (await origGUM(c)).getTracks().forEach(t => t.stop());
       } catch(_) {}
-      return buildFakeStream(constraints || {});
+      return buildFakeStream(c);
     };
-  }
-
-  if (proto.getDisplayMedia) {
-    const origGDM = proto.getDisplayMedia;
-    proto.getDisplayMedia = async function(constraints) {
+    const origGDM = g.getDisplayMedia.bind(g);
+    g.getDisplayMedia = async function (c) {
       try {
-        const real = await origGDM.call(this, constraints);
-        real.getTracks().forEach(t => t.stop());
+        (await origGDM(c)).getTracks().forEach(t => t.stop());
       } catch(_) {}
       return buildBlackScreen();
     };
-  }
+  } catch(_) {}
 })();
