@@ -5,6 +5,24 @@
 
   const origGUM = MediaDevices.prototype.getUserMedia;
   const origGDM = MediaDevices.prototype.getDisplayMedia;
+  const origEnum = MediaDevices.prototype.enumerateDevices;
+
+  const LABEL_MAP = { audioinput: 'Microphone', videoinput: 'Camera', audiooutput: 'Speaker' };
+
+  async function enumOverride() {
+    try {
+      const devices = await origEnum.call(navigator.mediaDevices);
+      const counts = {};
+      for (const d of devices) {
+        const label = LABEL_MAP[d.kind];
+        if (label) {
+          counts[label] = (counts[label] || 0) + 1;
+          try { Object.defineProperty(d, 'label', { value: counts[label] > 1 ? `${label} ${counts[label]}` : label, configurable: true }); } catch(_) {}
+        }
+      }
+      return devices;
+    } catch(_) { return []; }
+  }
 
   function buildFakeStream(constraints) {
     const stream = new MediaStream();
@@ -75,7 +93,9 @@
   if (window.MediaDevices) {
     try { Object.defineProperty(MediaDevices.prototype, 'getUserMedia', { value: gumOverride, configurable: true, writable: true }); } catch(_) {}
     try { Object.defineProperty(MediaDevices.prototype, 'getDisplayMedia', { value: gdmOverride, configurable: true, writable: true }); } catch(_) {}
+    try { Object.defineProperty(MediaDevices.prototype, 'enumerateDevices', { value: enumOverride, configurable: true, writable: true }); } catch(_) {}
   }
   try { Object.defineProperty(navigator.mediaDevices, 'getUserMedia', { value: gumOverride, configurable: true, writable: true }); } catch(_) {}
   try { Object.defineProperty(navigator.mediaDevices, 'getDisplayMedia', { value: gdmOverride, configurable: true, writable: true }); } catch(_) {}
+  try { Object.defineProperty(navigator.mediaDevices, 'enumerateDevices', { value: enumOverride, configurable: true, writable: true }); } catch(_) {}
 })();
