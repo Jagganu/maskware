@@ -1,0 +1,28 @@
+[package]
+name = "maskware-wasm"
+version = "0.1.0"
+edition = "2021"
+description = "Maskware WebAssembly module for fingerprint generation"
+license = "MIT"
+repository = "https://github.com/maskware/maskware"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+web-sys = { version = "0.3", features = ["Window", "Document", "HtmlCanvasElement", "CanvasRenderingContext2d", "ImageData"] }
+js-sys = "0.3"
+getrandom = { version = "0.2", features = ["js"] }
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.5"
+console_error_panic_hook = "0.1"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.release-wasm]
+inherits = "release"

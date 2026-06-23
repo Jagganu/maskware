@@ -1,0 +1,14 @@
+[
+  {
+    "id": 3001,
+    "priority": 1,
+    "action": { "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "Content-Security-Policy", "operation": "append", "value": "font-src 'self' data:; script-src 'self'; frame-ancestors 'none'; base-uri 'self'" }
+      ]
+    },
+    "condition": {
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  }
+]

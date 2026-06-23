@@ -1,0 +1,212 @@
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #6c5ce7;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #0a0a0f;
+  min-height: 480px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+.header-version {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* Profile Card */
+.profile-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.profile-hash {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hash-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.hash-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6c5ce7;
+  font-family: "SF Mono", "Cascadia Code", monospace;
+}
+.profile-meta {
+  margin-top: 6px;
+  display: flex;
+  gap: 4px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+}
+.meta-sep {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-new-identity {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #6c5ce7 0%, #a855f7 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-new-identity:hover {
+  opacity: 0.85;
+}
+.btn-new-identity:active {
+  opacity: 0.7;
+}
+
+/* Shield List */
+.shield-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0 0 6px 2px;
+}
+.shield-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 6px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.shield-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+.shield-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.shield-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e0e0e0;
+}
+.shield-desc {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* Toggle */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle-track::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+.toggle input:checked + .toggle-track {
+  background: #6c5ce7;
+}
+.toggle input:checked + .toggle-track::after {
+  transform: translateX(16px);
+  background: #fff;
+}
+
+/* Footer */
+.footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+.footer-gpu {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.25);
+  margin-bottom: 6px;
+}
+.footer-links {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.footer-links a {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+}
+.footer-links a:hover {
+  color: #6c5ce7;
+}

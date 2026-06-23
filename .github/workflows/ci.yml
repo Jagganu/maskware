@@ -1,0 +1,187 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  release:
+    types: [published]
+
+env:
+  NODE_VERSION: '20'
+  RUST_VERSION: '1.78'
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+      
+      - name: Run ESLint
+        run: npm run lint
+      
+      - name: Run TypeScript typecheck
+        run: npm run typecheck
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+      
+      - name: Run unit tests
+        run: npm run test:unit
+
+  build:
+    name: Build Extension
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck, unit-tests]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+      
+      - name: Build extension
+        run: npm run build
+      
+      - name: Verify build output
+        run: |
+          ls -la dist/
+          test -f dist/manifest.json
+          test -f dist/background.js
+          test -f dist/popup.js
+          test -f dist/popup.html
+          test -f dist/seed.js
+          test -f dist/offscreen.js
+          test -f dist/offscreen.html
+          for shield in hardware webrtc av fonts geo locale css-media permissions plugins; do
+            test -f "dist/shields/${shield}.js"
+          done
+          for rule in client-hints-strip webrtc-block csp-font-src; do
+            test -f "dist/rules/${rule}.json"
+          done
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-dist
+          path: dist/
+          retention-days: 7
+
+  wasm:
+    name: Build WASM Module
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            wasm/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('wasm/Cargo.lock') }}
+      
+      - name: Build WASM
+        run: |
+          cd wasm
+          cargo build --target wasm32-unknown-unknown --release
+      
+      - name: Upload WASM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm-module
+          path: wasm/target/wasm32-unknown-unknown/release/maskware_wasm.wasm
+          retention-days: 7
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+      
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-dist
+          path: dist/
+      
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build, wasm, e2e-tests]
+    if: github.event_name == 'release'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-dist
+          path: dist/
+      
+      - name: Download WASM artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wasm-module
+          path: dist/wasm/
+      
+      - name: Create release zip
+        run: |
+          cd dist
+          zip -r ../maskware-${{ github.event.release.tag_name }}.zip .
+      
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: maskware-${{ github.event.release.tag_name }}.zip

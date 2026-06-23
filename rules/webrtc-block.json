@@ -1,0 +1,65 @@
+[
+  {
+    "id": 2001,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "stun:*",
+      "resourceTypes": ["websocket", "other"]
+    }
+  },
+  {
+    "id": 2002,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "turn:*",
+      "resourceTypes": ["websocket", "other"]
+    }
+  },
+  {
+    "id": 2003,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "*stun.l.google.com*",
+      "resourceTypes": ["websocket", "other"]
+    }
+  },
+  {
+    "id": 2004,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "*stun1.l.google.com*",
+      "resourceTypes": ["websocket", "other"]
+    }
+  },
+  {
+    "id": 2005,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "*stun2.l.google.com*",
+      "resourceTypes": ["websocket", "other"]
+    }
+  },
+  {
+    "id": 2006,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "*stun3.l.google.com*",
+      "resourceTypes": ["websocket", "other"]
+    }
+  },
+  {
+    "id": 2007,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "*stun4.l.google.com*",
+      "resourceTypes": ["websocket", "other"]
+    }
+  }
+]

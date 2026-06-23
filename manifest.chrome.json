@@ -1,0 +1,121 @@
+{
+  "manifest_version": 3,
+  "name": "Maskware — Hardware Fingerprint Mask",
+  "version": "2.0.0",
+  "description": "Polymorphic browser fingerprinting protection",
+  "permissions": [
+    "storage",
+    "scripting",
+    "tabs",
+    "offscreen",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "webNavigation"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "offscreen": {
+    "reasons": [
+      "AUDIO_PLAYBACK",
+      "VIDEO_PLAYBACK"
+    ],
+    "scripts": ["offscreen.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shields/hardware.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shields/fonts.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shields/geo.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shields/locale.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shields/av.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shields/css-media.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shields/permissions.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["shields/plugins.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED",
+      "all_frames": true
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "webrtc_rules",
+        "enabled": true,
+        "path": "rules/webrtc-block.json"
+      },
+      {
+        "id": "client_hints_rules",
+        "enabled": true,
+        "path": "rules/client-hints-strip.json"
+      },
+      {
+        "id": "csp_font_rules",
+        "enabled": true,
+        "path": "rules/csp-font-src.json"
+      }
+    ]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_title": "Maskware"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "web_accessible_resources": []
+}
